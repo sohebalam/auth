@@ -78,7 +78,6 @@ export const clearProfile = () => async (dispatch) => {
 //loadUserProfile
 
 export const loadUser = (authCookie, req) => async (dispatch) => {
-  // console.log(authCookie)
   try {
     const config = {
       headers: {
@@ -88,8 +87,11 @@ export const loadUser = (authCookie, req) => async (dispatch) => {
     dispatch({ type: LOAD_USER_REQUEST })
 
     const { origin } = absoluteUrl(req)
+    console.log("data", origin)
 
-    const { data } = await axios.get(`${origin} /api/user/profile`, config)
+    const { data } = await axios.get(`${origin}/api/user/profile`, config)
+
+    console.log("data", data)
 
     dispatch({
       type: LOAD_USER_SUCCESS,

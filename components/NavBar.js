@@ -10,14 +10,17 @@ import Image from "next/image"
 import { Button, Typography, Link, Box, Badge } from "@material-ui/core"
 import PersonIcon from "@material-ui/icons/Person"
 import AssignmentIcon from "@material-ui/icons/Assignment"
-
+import { useSession, signIn, signOut, getSession } from "next-auth/react"
 import ExitToAppIcon from "@material-ui/icons/ExitToApp"
+import { loadUser } from "../redux/actions/userActions"
 
 import cookie from "js-cookie"
 import { useRouter } from "next/router"
 
 import { parseCookies } from "nookies"
 import Menu from "../components/Menu"
+import { useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,18 +38,80 @@ export default function NavBar() {
   const cookieuser = parseCookies()
   const user = cookieuser.user ? JSON.parse(cookieuser.user) : ""
 
-  // const { state, dispatch } = useContext(DataContext)
-  // const { cart } = state
+  const { data: session } = useSession()
+
+  console.log(session)
+  const dispatch = useDispatch()
+
+  const profile = useSelector((state) => state.profile)
+  const { loading, error, dbUser } = profile
+
+  console.log(dbUser)
+
+  useEffect(() => {
+    dispatch(loadUser())
+  }, [])
+
   const router = useRouter()
   const classes = useStyles()
-  const registerHandler = () => {}
   const logoutHandler = () => {
     cookie.remove("token")
     cookie.remove("user")
     router.push("/auth/login")
+    signOut()
   }
-  const loginHandler = () => {}
+  const AUser = user || dbUser || session?.user
 
+  const handleSignout = (e) => {
+    e.preventDefault()
+    logoutHandler()
+    // router.push("/user/login")
+  }
+
+  // return (
+  //   <div>
+  //     <div component="nav">
+  //       <AppBar position="static" style={{ color: "primary" }}>
+  //         <Toolbar>
+  //           <IconButton aria-label="menu">
+  //             <Link href="/">
+  //               {<img src="/v3.png" height="40px" alt="logo" />}
+  //             </Link>
+  //           </IconButton>
+
+  //           <Typography variant="h6" className={classes.title}></Typography>
+  //           <></>
+  //           {/* {AUser ? <Typography>{AUser.name}</Typography> : ""} */}
+  //           {AUser ? (
+  //             <>
+  //               {AUser && <Typography>{AUser.name}</Typography>}
+
+  //               <Button color="inherit" onClick={handleSignout}>
+  //                 <ExitToAppIcon />
+  //                 SignOut
+  //               </Button>
+  //             </>
+  //           ) : (
+  //             <>
+  //               <Link href="/user/register">
+  //                 <Button color="inherit">
+  //                   <AssignmentIcon style={{ marginRight: "0.25rem" }} />
+  //                   Register
+  //                 </Button>
+  //               </Link>
+  //               <Link href="/user/login">
+  //                 <Button color="inherit">
+  //                   <PersonIcon style={{ marginRight: "0.25rem" }} />
+  //                   Login
+  //                 </Button>
+  //               </Link>
+  //             </>
+  //           )}
+  //         </Toolbar>
+  //       </AppBar>
+  //     </div>
+  //   </div>
+  // )
   return (
     <div>
       {/* <Container> */}
@@ -65,7 +130,7 @@ export default function NavBar() {
           <>
             {/* {Object.keys(auth).length ? ( */}
             <>
-              {user && (
+              {AUser && (
                 <>
                   <div
                     style={{
@@ -75,8 +140,7 @@ export default function NavBar() {
                     }}
                   >
                     <Typography style={{ marginTop: "0.25rem" }}>
-                      {" "}
-                      Hello {user?.firstName} {user?.lastName}
+                      Hello {user?.firstName} {user?.lastName} {AUser?.name}
                     </Typography>
                   </div>
                   <div
@@ -112,15 +176,7 @@ export default function NavBar() {
                   </Button>
                 </Link> */}
 
-                {(user.role === "admin" || user.role === "root") && (
-                  // <Link href="/upload">
-                  <Menu style={{ color: "white" }}>
-                    <AssignmentIcon style={{ marginRight: "0.25rem" }} />
-                    Upload
-                  </Menu>
-                  // </Link>
-                )}
-                {user ? (
+                {AUser ? (
                   <Button
                     color="inherit"
                     onClick={logoutHandler}
@@ -132,13 +188,13 @@ export default function NavBar() {
                 ) : (
                   <>
                     <Link style={{ color: "white" }} href="/auth/register">
-                      <Button color="inherit" onClick={registerHandler}>
+                      <Button color="inherit">
                         <AssignmentIcon style={{ marginRight: "0.25rem" }} />
                         Register
                       </Button>
                     </Link>
                     <Link style={{ color: "white" }} href="/auth/login">
-                      <Button color="inherit" onClick={loginHandler}>
+                      <Button color="inherit">
                         <PersonIcon style={{ marginRight: "0.25rem" }} />
                         Login
                       </Button>

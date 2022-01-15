@@ -379,4 +379,24 @@ function Login() {
   )
 }
 
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      const session = await getSession({ req })
+
+      console.log("login", session)
+
+      store.dispatch(loadUser(req.headers.cookie, req))
+
+      // if (!session || !session.user.role.includes("user")) {
+      //   return {
+      //     redirect: {
+      //       destination: "/",
+      //       permanent: false,
+      //     },
+      //   }
+      // }
+    }
+)
+
 export default Login

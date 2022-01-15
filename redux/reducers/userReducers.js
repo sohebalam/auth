@@ -74,17 +74,12 @@ export const regSocialReducer = (
 }
 
 export const profileReducer = (state = { dbUser: null }, action) => {
+  console.log(action.payload)
   switch (action.type) {
     case LOAD_USER_REQUEST:
       return { loading: true }
     case LOAD_USER_SUCCESS:
-      return {
-        loading: false,
-        success: true,
-        isAuthenticated: true,
-
-        dbUser: action.payload,
-      }
+      return { loading: false, dbUser: action.payload }
     case LOAD_USER_FAIL:
       return { loading: false, error: action.payload }
     case UPDATE_PROFILE_RESET:
