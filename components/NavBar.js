@@ -10,15 +10,14 @@ import Image from "next/image"
 import { Button, Typography, Link, Box, Badge } from "@material-ui/core"
 import PersonIcon from "@material-ui/icons/Person"
 import AssignmentIcon from "@material-ui/icons/Assignment"
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart"
+
 import ExitToAppIcon from "@material-ui/icons/ExitToApp"
-import { DataContext } from "../store/GlobalState"
+
 import cookie from "js-cookie"
 import { useRouter } from "next/router"
-import PublishIcon from "@material-ui/icons/Publish"
+
 import { parseCookies } from "nookies"
 import Menu from "../components/Menu"
-import ProfileMenu from "./ProfileMenu"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -87,7 +86,7 @@ export default function NavBar() {
                       marginTop: "0.75",
                     }}
                   >
-                    <ProfileMenu user={user} />
+                    {/* <ProfileMenu user={user} /> */}
                   </div>
                 </>
               )}
