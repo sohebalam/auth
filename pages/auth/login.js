@@ -202,8 +202,8 @@ function Login() {
             </Typography>
             {/* <FacebookLoginButton onClick={() => signIn("facebook")} /> */}
             <GoogleLoginButton onClick={() => signIn("google")} />
-            <TwitterLoginButton onClick={() => signIn("twitter")} />
-            <LinkedInLoginButton onClick={() => signIn("linkedin")} />
+            {/* <TwitterLoginButton onClick={() => signIn("twitter")} />
+            <LinkedInLoginButton onClick={() => signIn("linkedin")} /> */}
             <GithubLoginButton onClick={() => signIn("github")} />
           </div>
           {/* </Container> */}
