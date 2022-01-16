@@ -1,5 +1,5 @@
 import catchAsyncErrors from "../middlewares/catchAsyncErrors"
-import NUser from "../models/userModel"
+import User from "../models/userModel"
 // import { Social } from "../socialModel"
 import absoluteUrl from "next-absolute-url"
 import connectDB from "../connectDB"
@@ -30,14 +30,14 @@ export const registerUser = catchAsyncErrors(async (req, res) => {
     return res.status(400).json({ message: "Not a valid email" })
   }
 
-  const userExists = await NUser.findOne({ email })
+  const userExists = await User.findOne({ email })
 
   if (userExists) {
     return res.status(400).json({ message: "user exists" })
   }
 
   const salt = await bcrypt.genSalt(12)
-  const user = await NUser.create({
+  const user = await User.create({
     name,
     email,
     password: await bcrypt.hash(password, salt),
@@ -52,89 +52,47 @@ export const registerUser = catchAsyncErrors(async (req, res) => {
 export const currentUserProfile = catchAsyncErrors(async (req, res) => {
   // console.log("here")
 
-  if(req.user) {
-
+  if (req.user) {
     res.status(200).send(req.user)
-
-
   }
-
-  
-
-  // if (req.user.id) {
-  //   const dbUser = await User.findOne({ socialId: req.user.id })
-
-  //   if (dbUser.password === "" || dbUser.password === undefined) {
-  //     dbUser.isPassword = false
-  //   }
-
-  //   dbUser.password = undefined
-
-  //   res.status(200).send(dbUser)
-  //   // console.log(dbUser)
-  // } else {
-  //   const dbUser = await User.findById(req.user._id)
-  //   if (dbUser.password === "" || dbUser.password === undefined) {
-  //     dbUser.isPassword = false
-  //   }
-  //   dbUser.password = undefined
-  //   // console.log(dbUser)
-  //   res.status(200).send(dbUser)
-  // }
 })
 
 export const updateProfile = async (req, res) => {
   // console.log(req.method)
 
-  if (req.user.id) {
-    const user = await User.findOne({ socialId: req.user.id })
+  console.log(req.body.update, req.body.email)
 
-    // console.log(user)
-
-    if (user) {
-      user.name = req.body.name
-      user.email = req.body.email
-
-      if (req.body.password) {
-        if (req.body.password < 6) {
-          return res
-            .status(400)
-            .json({ message: "password must be at least 6 characters" })
-        }
-
-        const salt = await bcrypt.genSalt(12)
-        user.password = await bcrypt.hash(req.body.password, salt)
-      }
+  let user = await User.findOneAndUpdate(
+    { email: req.body.email },
+    { update: req.body.update },
+    {
+      new: true,
     }
+  )
 
-    await user.save()
-    res.status(200).json({
-      success: true,
-    })
-  } else {
-    const user = await User.findById(req.user._id)
-    if (user) {
-      user.name = req.body.name
-      if (req.body.password) {
-        if (req.body.password < 6) {
-          return res
-            .status(400)
-            .json({ message: "password must be at least 6 characters" })
-        }
-        const salt = await bcrypt.genSalt(12)
-        user.password = await bcrypt.hash(req.body.password, salt)
-      }
-    }
-    if (user.email) {
-      const { email } = user
+  console.log(user)
 
-      user.email = req.body.email
-    }
-    await user.save()
-    res.status(200).json({
-      success: true,
-    })
-  }
+  // await User.updateOne(req.body.email, { udapte: req.body.update })
+  // let user = await User.findOneAndUpdate(
+  //   req.body.email,
+  //   { update: req.body.update },
+  //   {
+  //     new: true,
+  //   }
+  // )
+
+  // let user = await User.updateOne(
+  //   { email: req.body.email },
+  //   { update: req.body.update }
+  // )
+  // // This will update `doc` age to `59`, even though the doc changed.
+  // await user.save()
+  // console.log(user)
+
+  // if (user) {
+  //   user.update = req.method.update
+  //   // await user.save()
+  // }
 }
 
 export const forgotPassword = async (req, res) => {
@@ -164,7 +122,7 @@ export const forgotPassword = async (req, res) => {
     const link = `${origin}/user/reset/${token}`
     // HTML Message
     const message = `
-      
+
       <div>Click the link below to reset your password or if the link is not working, please paste it into your browser</div><br/>
       <div>${link}</div>
     `

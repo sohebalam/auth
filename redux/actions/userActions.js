@@ -87,11 +87,8 @@ export const loadUser = (authCookie, req) => async (dispatch) => {
     dispatch({ type: LOAD_USER_REQUEST })
 
     const { origin } = absoluteUrl(req)
-    console.log("data", origin)
 
     const { data } = await axios.get(`${origin}/api/user/profile`, config)
-
-    console.log("data", data)
 
     dispatch({
       type: LOAD_USER_SUCCESS,

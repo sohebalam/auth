@@ -74,7 +74,6 @@ export const regSocialReducer = (
 }
 
 export const profileReducer = (state = { dbUser: null }, action) => {
-  console.log(action.payload)
   switch (action.type) {
     case LOAD_USER_REQUEST:
       return { loading: true }

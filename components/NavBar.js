@@ -40,13 +40,10 @@ export default function NavBar() {
 
   const { data: session } = useSession()
 
-  console.log(session)
   const dispatch = useDispatch()
 
   const profile = useSelector((state) => state.profile)
   const { loading, error, dbUser } = profile
-
-  console.log(dbUser)
 
   useEffect(() => {
     dispatch(loadUser())
@@ -68,50 +65,6 @@ export default function NavBar() {
     // router.push("/user/login")
   }
 
-  // return (
-  //   <div>
-  //     <div component="nav">
-  //       <AppBar position="static" style={{ color: "primary" }}>
-  //         <Toolbar>
-  //           <IconButton aria-label="menu">
-  //             <Link href="/">
-  //               {<img src="/v3.png" height="40px" alt="logo" />}
-  //             </Link>
-  //           </IconButton>
-
-  //           <Typography variant="h6" className={classes.title}></Typography>
-  //           <></>
-  //           {/* {AUser ? <Typography>{AUser.name}</Typography> : ""} */}
-  //           {AUser ? (
-  //             <>
-  //               {AUser && <Typography>{AUser.name}</Typography>}
-
-  //               <Button color="inherit" onClick={handleSignout}>
-  //                 <ExitToAppIcon />
-  //                 SignOut
-  //               </Button>
-  //             </>
-  //           ) : (
-  //             <>
-  //               <Link href="/user/register">
-  //                 <Button color="inherit">
-  //                   <AssignmentIcon style={{ marginRight: "0.25rem" }} />
-  //                   Register
-  //                 </Button>
-  //               </Link>
-  //               <Link href="/user/login">
-  //                 <Button color="inherit">
-  //                   <PersonIcon style={{ marginRight: "0.25rem" }} />
-  //                   Login
-  //                 </Button>
-  //               </Link>
-  //             </>
-  //           )}
-  //         </Toolbar>
-  //       </AppBar>
-  //     </div>
-  //   </div>
-  // )
   return (
     <div>
       {/* <Container> */}
