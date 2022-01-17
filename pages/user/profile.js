@@ -52,7 +52,7 @@ function Profile({ session }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: session.user.email,
+        email: session?.user.email,
         update,
       }),
     })
