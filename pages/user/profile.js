@@ -37,8 +37,6 @@ const useStyles = makeStyles((theme) => ({
 function Profile({ session }) {
   const [update, setUpdate] = useState("")
 
-  console.log(session.user.email)
-
   const classes = useStyles()
 
   const submitHandler = async (e) => {
