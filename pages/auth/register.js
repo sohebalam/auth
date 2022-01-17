@@ -13,7 +13,6 @@ import { makeStyles } from "@material-ui/core/styles"
 import Container from "@material-ui/core/Container"
 import valid from "../../utils/valid"
 import { Alert } from "@material-ui/lab"
-import baseUrl from "../../utils/baseUrl"
 import { useRouter } from "next/router"
 
 const useStyles = makeStyles((theme) => ({
@@ -51,7 +50,7 @@ export default function SignUp() {
     if (errMsg) {
       console.log(errMsg)
     }
-    const res = await fetch(`${baseUrl}/api/auth/register`, {
+    const res = await fetch(`/api/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
