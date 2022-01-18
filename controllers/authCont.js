@@ -53,6 +53,7 @@ export const currentUserProfile = catchAsyncErrors(async (req, res) => {
   // console.log("here")
 
   if (req.user) {
+    console.log(req.user)
     res.status(200).send(req.user)
   }
 })

@@ -6,7 +6,7 @@ const connectDB = () => {
     return
   }
   mongoose.connect(
-    process.env.DB,
+    process.env.MONGODB_URI,
     {
       useCreateIndex: true,
       useFindAndModify: false,
