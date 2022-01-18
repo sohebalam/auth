@@ -202,6 +202,7 @@ function Login() {
             </Typography>
             {/* <FacebookLoginButton onClick={() => signIn("facebook")} /> */}
             <GoogleLoginButton onClick={() => signIn("google")} />
+
             {/* <TwitterLoginButton onClick={() => signIn("twitter")} />
             <LinkedInLoginButton onClick={() => signIn("linkedin")} /> */}
             <GithubLoginButton onClick={() => signIn("github")} />
@@ -218,7 +219,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     async ({ req }) => {
       const session = await getSession({ req })
 
-      console.log("login", session)
+      // console.log("login", session)
 
       store.dispatch(loadUser(req.headers.cookie, req))
 

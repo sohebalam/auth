@@ -15,10 +15,10 @@ export default NextAuth({
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      console.log(account.providerAccountId)
+      // console.log(account.providerAccountId)
       // accountId = Object.stringy(account.providerAccountId)
-      user.id = account.providerAccountId
-      console.log(account)
+      // user.id = account.providerAccountId
+      // console.log(account)
       return true
     },
     async jwt({ token, user, profile }) {
@@ -33,12 +33,12 @@ export default NextAuth({
 
       return session
     },
-    session: {
-      strategy: "database",
+    // session: {
+    //   strategy: "database",
 
-      maxAge: 30 * 24 * 60 * 60, // 30 days
+    //   maxAge: 30 * 24 * 60 * 60, // 30 days
 
-      updateAge: 24 * 60 * 60, // 24 hours
-    },
+    //   updateAge: 24 * 60 * 60, // 24 hours
+    // },
   },
 })
